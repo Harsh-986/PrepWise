@@ -1,7 +1,7 @@
 *ai mock interview system*
--to make better at interview
+-to make you better at interview
 -secure hackproof authentication
--multiple interview
+-multiple interview on diff topics
 -real life mock interview sessions
 -feedack or report to your performance in the interview
 -fully responsive
@@ -15,6 +15,6 @@ voice api
 firebase - auth and database managment 
 gemeni ai 
 zod
-shadcn/ui - for more beautiful-designs 
+shadcn/ui - for more beautiful-designs, Instead of giving you precompiled components, it copies the actual component code into your project. You can fully customize them.
 
 
