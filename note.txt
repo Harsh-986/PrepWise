@@ -12,7 +12,11 @@ next.js
 tailwind
 vapi- voice agent
 voice api
-firebase - auth and database managment 
+firebase - auth and database managment-
+    1.Store user data (like usernames, scores, posts) in a database.
+    2.Handle user login and sign-up securely.
+    3.Run trusted code on the server side.
+    
 gemeni ai 
 zod
 shadcn/ui - for more beautiful-designs, Instead of giving you precompiled components, it copies the actual component code into your project. You can fully customize them.
