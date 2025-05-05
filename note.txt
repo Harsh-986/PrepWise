@@ -21,4 +21,5 @@ gemeni ai
 zod
 shadcn/ui - for more beautiful-designs, Instead of giving you precompiled components, it copies the actual component code into your project. You can fully customize them.
 
+Done
 
