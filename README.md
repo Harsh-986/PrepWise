@@ -14,10 +14,12 @@
 Built with Next.js for the user interface and backend logic, Firebase for authentication and data storage, styled with TailwindCSS and using Vapi's voice agents, Prepwise is a website project designed to help you learn integrating AI models with your apps. The platform offers a sleek and modern experience for job interview preparation.
 ### PrepWise Deployed Link
 [https://prep-wise-olive.vercel.app/sign-in](https://prep-wise-olive.vercel.app/)
+![Screenshot 1](Screenshot%202025-05-06%20131356.png)
 
-![Alt text](Screenshot 2025-05-06 131607.png)
-![Alt text](Screenshot 2025-05-06 131356.png)
-![Alt text](Screenshot 2025-05-06 131416.png)
+![Screenshot 2](Screenshot%202025-05-06%20131416.png)
+
+![Screenshot 3](Screenshot%202025-05-06%20131607.png)
+
 
 
 
