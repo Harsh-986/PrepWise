@@ -15,6 +15,13 @@ Built with Next.js for the user interface and backend logic, Firebase for authen
 ### PrepWise Deployed Link
 [https://prep-wise-olive.vercel.app/sign-in](https://prep-wise-olive.vercel.app/)
 
+![Alt text](Screenshot 2025-05-06 131607.png)
+![Alt text](Screenshot 2025-05-06 131356.png)
+![Alt text](Screenshot 2025-05-06 131416.png)
+
+
+
+
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
