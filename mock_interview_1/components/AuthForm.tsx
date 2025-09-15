@@ -46,6 +46,8 @@ const AuthForm = ({ type }: { type: FormType }) => {
       if (type === "sign-up") {
         const { name, email, password } = data;
 
+
+
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           email,

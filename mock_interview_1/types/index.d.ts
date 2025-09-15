@@ -47,13 +47,13 @@ interface InterviewCardProps {
   createdAt?: string;
 }
 
+// Updated AgentProps - removed type prop and made questions required
 interface AgentProps {
   userName: string;
-  userId?: string;
-  interviewId?: string;
+  userId: string;
+  interviewId: string;
   feedbackId?: string;
-  type: "generate" | "interview";
-  questions?: string[];
+  questions: string[];
 }
 
 interface RouteParams {
@@ -96,4 +96,13 @@ interface InterviewFormProps {
 
 interface TechIconProps {
   techStack: string[];
+}
+
+// New interface for the interview form data
+interface InterviewFormData {
+  role: string;
+  level: "Junior" | "Mid" | "Senior";
+  type: "Technical" | "Behavioral" | "Mixed";
+  techstack: string;
+  amount: number;
 }
