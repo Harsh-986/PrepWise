@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
-import { interviewer } from "@/constants";
+import { createInterviewAssistant } from "@/constants";
 import { createFeedback } from "@/lib/actions/general.action";
 
 enum CallStatus {
@@ -27,6 +27,9 @@ interface AgentProps {
   interviewId: string;
   feedbackId?: string;
   questions: string[];
+  role?: string;
+  level?: string;
+  techstack?: string[];
 }
 
 const Agent = ({
@@ -35,6 +38,9 @@ const Agent = ({
   interviewId,
   feedbackId,
   questions,
+  role,
+  level,
+  techstack,
 }: AgentProps) => {
   const router = useRouter();
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -59,12 +65,10 @@ const Agent = ({
     };
 
     const onSpeechStart = () => {
-      console.log("speech start");
       setIsSpeaking(true);
     };
 
     const onSpeechEnd = () => {
-      console.log("speech end");
       setIsSpeaking(false);
     };
 
@@ -95,8 +99,6 @@ const Agent = ({
     }
 
     const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-      console.log("handleGenerateFeedback");
-
       const { success, feedbackId: id } = await createFeedback({
         interviewId: interviewId,
         userId: userId,
@@ -121,17 +123,21 @@ const Agent = ({
     setCallStatus(CallStatus.CONNECTING);
 
     let formattedQuestions = "";
-    if (questions) {
+    if (questions && questions.length > 0) {
       formattedQuestions = questions
         .map((question) => `- ${question}`)
         .join("\n");
     }
 
-    await vapi.start(interviewer, {
-      variableValues: {
-        questions: formattedQuestions,
-      },
+    // Create the assistant configuration with the actual values instead of template variables
+    const assistantConfig = createInterviewAssistant({
+      questions: formattedQuestions,
+      role: role || "Software Developer",
+      level: level || "Mid-level",
+      techstack: techstack?.join(", ") || "General Technologies"
     });
+
+    await vapi.start(assistantConfig);
   };
 
   const handleDisconnect = () => {
@@ -172,6 +178,9 @@ const Agent = ({
         </div>
       </div>
 
+      {/* Remove microphone control section completely */}
+
+      {/* Transcript Display - Show only latest message like original */}
       {messages.length > 0 && (
         <div className="transcript-border">
           <div className="transcript">
@@ -188,9 +197,17 @@ const Agent = ({
         </div>
       )}
 
+      {/* Call Control Buttons */}
       <div className="w-full flex justify-center">
         {callStatus !== "ACTIVE" ? (
-          <button className="relative btn-call" onClick={() => handleCall()}>
+          <button 
+            className={cn(
+              "relative btn-call",
+              callStatus === "CONNECTING" && "animate-pulse"
+            )} 
+            onClick={handleCall}
+            disabled={callStatus === "CONNECTING"}
+          >
             <span
               className={cn(
                 "absolute animate-ping rounded-full opacity-75",
@@ -201,11 +218,11 @@ const Agent = ({
             <span className="relative">
               {callStatus === "INACTIVE" || callStatus === "FINISHED"
                 ? "Start Interview"
-                : ". . ."}
+                : "Connecting..."}
             </span>
           </button>
         ) : (
-          <button className="btn-disconnect" onClick={() => handleDisconnect()}>
+          <button className="btn-disconnect" onClick={handleDisconnect}>
             End Interview
           </button>
         )}

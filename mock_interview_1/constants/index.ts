@@ -1,3 +1,4 @@
+// constants/index.ts
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { z } from "zod";
 
@@ -97,6 +98,95 @@ export const mappings = {
   "aws amplify": "amplify",
 };
 
+// Updated to use assistant-only approach like the working examples
+export const createInterviewAssistant = (params?: {
+  questions?: string;
+  role?: string;
+  level?: string;
+  techstack?: string;
+}): CreateAssistantDTO => {
+  const {
+    questions = "",
+    role = "Software Developer",
+    level = "Mid-level",
+    techstack = "General Technologies"
+  } = params || {};
+
+  return {
+    name: "AI Interviewer",
+    firstMessage:
+      `Hello! Thank you for taking the time to speak with me today. I'm excited to learn more about you and your experience for the ${role} position at ${level} level.`,
+    transcriber: {
+      provider: "deepgram",
+      model: "nova-2",
+      language: "en",
+    },
+    voice: {
+      provider: "11labs",
+      voiceId: "sarah",
+      stability: 0.4,
+      similarityBoost: 0.8,
+      speed: 0.9,
+      style: 0.5,
+      useSpeakerBoost: true,
+    },
+    model: {
+      provider: "openai",
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content: `You are a professional job interviewer conducting a real-time voice interview with a candidate. Your goal is to assess their qualifications, motivation, and fit for the ${role} role at ${level}.
+
+Interview Context:
+- Position: ${role}
+- Level: ${level}
+- Tech Stack: ${techstack}
+
+Interview Guidelines:
+Focus on the structured question flow and skip basic information gathering since we already know their role and level:
+${questions}
+
+Engage naturally & react appropriately:
+- Listen actively to responses and acknowledge them before moving forward.
+- Ask brief follow-up questions if a response is vague or requires more detail.
+- Keep the conversation flowing smoothly while maintaining control.
+- Since we know they're applying for ${role} at ${level} level, dive straight into relevant questions.
+
+Be professional, yet warm and welcoming:
+- Use official yet friendly language.
+- Keep responses concise and to the point (like in a real voice interview).
+- Avoid robotic phrasing—sound natural and conversational.
+- Show genuine interest in the candidate's responses.
+
+Technical Assessment:
+- Focus on the technologies mentioned in their tech stack: ${techstack}
+- Probe deeper into technical concepts when relevant.
+- Ask for real-world examples and problem-solving scenarios.
+- Adjust question difficulty based on the ${level} level.
+
+Answer the candidate's questions professionally:
+- If asked about the role, company, or expectations, provide a clear and relevant answer.
+- If unsure, redirect the candidate to HR for more details.
+
+Conclude the interview properly:
+- Thank the candidate for their time.
+- Inform them that the company will reach out soon with feedback.
+- End the conversation on a polite and positive note.
+
+Important Notes:
+- Be sure to be professional and polite.
+- Keep all your responses short and simple. Use official language, but be kind and welcoming.
+- This is a voice conversation, so keep your responses short, like in a real conversation. Don't ramble for too long.
+- Do not include any special characters in your responses - this is a voice conversation.
+- Focus on interviewing for the specific ${role} position at ${level} level with ${techstack} technologies.`,
+        },
+      ],
+    },
+  };
+};
+
+// Keep the original interviewer for backward compatibility
 export const interviewer: CreateAssistantDTO = {
   name: "Interviewer",
   firstMessage:
@@ -136,7 +226,7 @@ Be professional, yet warm and welcoming:
 Use official yet friendly language.
 Keep responses concise and to the point (like in a real voice interview).
 Avoid robotic phrasing—sound natural and conversational.
-Answer the candidate’s questions professionally:
+Answer the candidate's questions professionally:
 
 If asked about the role, company, or expectations, provide a clear and relevant answer.
 If unsure, redirect the candidate to HR for more details.
@@ -145,7 +235,6 @@ Conclude the interview properly:
 Thank the candidate for their time.
 Inform them that the company will reach out soon with feedback.
 End the conversation on a polite and positive note.
-
 
 - Be sure to be professional and polite.
 - Keep all your responses short and simple. Use official language, but be kind and welcoming.
